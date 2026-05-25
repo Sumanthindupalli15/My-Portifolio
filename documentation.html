@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio Project — Technical Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #fdfdfe;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --muted: #64748b;
+      --accent: #2563eb;
+      --accent-bg: #eff6ff;
+      --code-bg: #f1f5f9;
+      --success: #16a34a;
+      --warn: #d97706;
+      --sidebar-w: 280px;
+    }
+    html { scroll-behavior: smooth; font-size: 15px; }
+    body { font-family: 'Inter', system-ui, sans-serif; color: var(--text); background: var(--bg); line-height: 1.7; }
+    code, pre { font-family: 'JetBrains Mono', monospace; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Layout */
+    .layout { display: flex; min-height: 100vh; }
+    .sidebar {
+      position: fixed; top: 0; left: 0; bottom: 0;
+      width: var(--sidebar-w); background: var(--surface);
+      border-right: 1px solid var(--border);
+      overflow-y: auto; padding: 2rem 1.25rem;
+      z-index: 10;
+    }
+    .main { margin-left: var(--sidebar-w); flex: 1; padding: 2.5rem 3rem 4rem; max-width: 920px; }
+
+    /* Sidebar */
+    .sidebar-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; margin-bottom: 0.75rem; margin-top: 1.5rem; }
+    .sidebar-title:first-child { margin-top: 0; }
+    .sidebar-links { list-style: none; }
+    .sidebar-links li { margin-bottom: 2px; }
+    .sidebar-links a {
+      display: block; padding: 0.35rem 0.75rem; border-radius: 6px;
+      font-size: 0.875rem; color: var(--text); transition: all 0.15s;
+    }
+    .sidebar-links a:hover { background: var(--accent-bg); color: var(--accent); text-decoration: none; }
+    .sidebar-links a.sub { padding-left: 1.5rem; color: var(--muted); font-size: 0.82rem; }
+
+    /* Headings */
+    h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    h1 .badge {
+      display: inline-block; font-size: 0.7rem; font-weight: 600;
+      padding: 0.2rem 0.6rem; border-radius: 9999px;
+      background: var(--accent-bg); color: var(--accent);
+      vertical-align: middle; margin-left: 0.5rem;
+    }
+    h2 { font-size: 1.5rem; font-weight: 700; margin-top: 3rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+    h3 { font-size: 1.15rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; }
+    h4 { font-size: 1rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--muted); }
+
+    .subtitle { color: var(--muted); font-size: 1.05rem; margin-bottom: 2rem; }
+
+    /* Prose */
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.35rem; }
+
+    /* Code */
+    code {
+      background: var(--code-bg); padding: 0.15rem 0.4rem;
+      border-radius: 4px; font-size: 0.85em;
+    }
+    pre {
+      background: #1e293b; color: #e2e8f0;
+      padding: 1.25rem 1.5rem; border-radius: 8px;
+      overflow-x: auto; margin-bottom: 1.5rem;
+      font-size: 0.82rem; line-height: 1.6;
+    }
+    pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+    .comment { color: #94a3b8; }
+    .keyword { color: #c084fc; }
+    .string { color: #86efac; }
+    .fn { color: #7dd3fc; }
+    .type { color: #fbbf24; }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.9rem; }
+    th, td { text-align: left; padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); }
+    th { font-weight: 600; background: var(--code-bg); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+
+    /* Cards */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.25rem 1.5rem; margin-bottom: 1rem;
+    }
+    .card-title { font-weight: 600; margin-bottom: 0.25rem; }
+    .card-desc { color: var(--muted); font-size: 0.9rem; }
+
+    /* Badges */
+    .tag {
+      display: inline-block; font-size: 0.72rem; font-weight: 500;
+      padding: 0.15rem 0.5rem; border-radius: 4px;
+      background: var(--code-bg); color: var(--muted);
+      margin-right: 0.35rem; margin-bottom: 0.35rem;
+    }
+    .tag.blue { background: #dbeafe; color: #1d4ed8; }
+    .tag.green { background: #dcfce7; color: #15803d; }
+    .tag.amber { background: #fef3c7; color: #b45309; }
+    .tag.rose { background: #ffe4e6; color: #be123c; }
+
+    /* Callouts */
+    .callout {
+      border-left: 4px solid var(--accent); background: var(--accent-bg);
+      padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+    .callout.warn { border-color: var(--warn); background: #fffbeb; }
+    .callout strong { display: block; margin-bottom: 0.25rem; }
+
+    /* File tree */
+    .file-tree { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; line-height: 1.8; margin-bottom: 1.5rem; }
+    .file-tree .dir { color: var(--accent); font-weight: 500; }
+    .file-tree .file { color: var(--text); }
+    .file-tree .desc { color: var(--muted); font-style: italic; }
+
+    /* Diagram boxes */
+    .arch-diagram {
+      display: flex; flex-wrap: wrap; gap: 1rem;
+      margin-bottom: 1.5rem; justify-content: center;
+    }
+    .arch-box {
+      border: 2px solid var(--border); border-radius: 10px;
+      padding: 1rem 1.25rem; text-align: center; min-width: 140px;
+      background: var(--surface);
+    }
+    .arch-box .label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.25rem; }
+    .arch-box .value { font-weight: 600; font-size: 0.95rem; }
+    .arch-arrow { display: flex; align-items: center; font-size: 1.5rem; color: var(--muted); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; padding: 1.5rem; }
+    }
+
+    /* Print */
+    @media print {
+      .sidebar { display: none; }
+      .main { margin-left: 0; max-width: 100%; }
+      pre { white-space: pre-wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<nav class="sidebar">
+  <div style="font-weight:700;font-size:1.1rem;margin-bottom:1.5rem;">📄 Documentation</div>
+
+  <div class="sidebar-title">Overview</div>
+  <ul class="sidebar-links">
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#tech-stack">Tech Stack</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+  </ul>
+
+  <div class="sidebar-title">Project Structure</div>
+  <ul class="sidebar-links">
+    <li><a href="#directory">Directory Layout</a></li>
+    <li><a href="#config-files">Configuration Files</a></li>
+  </ul>
+
+  <div class="sidebar-title">Components</div>
+  <ul class="sidebar-links">
+    <li><a href="#comp-overview">Component Overview</a></li>
+    <li><a href="#comp-layout">Layout &amp; Providers</a></li>
+    <li><a href="#comp-page">Page &amp; Splash Screen</a></li>
+    <li><a href="#comp-navbar">Navbar</a></li>
+    <li><a href="#comp-hero">Hero</a></li>
+    <li><a href="#comp-about">About</a></li>
+    <li><a href="#comp-experience">Experience</a></li>
+    <li><a href="#comp-projects">Projects</a></li>
+    <li><a href="#comp-skills">Skills</a></li>
+    <li><a href="#comp-education">Education</a></li>
+    <li><a href="#comp-contact">Contact</a></li>
+    <li><a href="#comp-footer">Footer</a></li>
+    <li><a href="#comp-scrollreveal">ScrollReveal</a></li>
+    <li><a href="#comp-themeprovider">ThemeProvider</a></li>
+  </ul>
+
+  <div class="sidebar-title">API</div>
+  <ul class="sidebar-links">
+    <li><a href="#api-resume">Resume PDF Endpoint</a></li>
+  </ul>
+
+  <div class="sidebar-title">Styling</div>
+  <ul class="sidebar-links">
+    <li><a href="#design-system">Design System</a></li>
+    <li><a href="#theming">Theming (Dark/Light)</a></li>
+    <li><a href="#animations">Animations</a></li>
+  </ul>
+
+  <div class="sidebar-title">Development</div>
+  <ul class="sidebar-links">
+    <li><a href="#setup">Setup &amp; Commands</a></li>
+    <li><a href="#dependencies">Dependencies</a></li>
+    <li><a href="#deployment">Deployment</a></li>
+  </ul>
+</nav>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="layout">
+<main class="main">
+
+<!-- =============================== -->
+<!-- INTRODUCTION                    -->
+<!-- =============================== -->
+<h1 id="introduction">Indupalli Sumanth — Portfolio <span class="badge">v0.1.0</span></h1>
+<p class="subtitle">Technical documentation for the personal portfolio website built with Next.js 14, TypeScript, Tailwind CSS, and Framer Motion.</p>
+
+<p>This is a single-page portfolio application that showcases professional experience, projects, skills, education, and certifications. It features a dark/light theme toggle, scroll-triggered animations, a resume PDF download API, and a contact form.</p>
+
+<div class="callout">
+  <strong>Key Highlights</strong>
+  Server-rendered with Next.js App Router &bull; Fully responsive design &bull; Dark/light theme with localStorage persistence &bull; Animated splash screen &bull; Server-side PDF resume generation via <code>/api/resume</code> &bull; Scroll-reveal animations powered by Framer Motion &bull; TypeScript strict mode throughout.
+</div>
+
+<!-- =============================== -->
+<!-- TECH STACK                      -->
+<!-- =============================== -->
+<h2 id="tech-stack">Tech Stack</h2>
+
+<table>
+  <thead>
+    <tr><th>Category</th><th>Technology</th><th>Purpose</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Framework</td><td><code>Next.js 14</code> (App Router)</td><td>React framework with SSR, API routes, file-based routing</td></tr>
+    <tr><td>Language</td><td><code>TypeScript 6.x</code> (strict)</td><td>Type safety across all components and API routes</td></tr>
+    <tr><td>UI Library</td><td><code>React 18</code></td><td>Component-based UI rendering</td></tr>
+    <tr><td>Styling</td><td><code>Tailwind CSS 3.4</code></td><td>Utility-first CSS with custom design tokens</td></tr>
+    <tr><td>Animations</td><td><code>Framer Motion 12</code></td><td>Declarative animations, layout transitions, scroll-triggered reveals</td></tr>
+    <tr><td>Icons</td><td><code>Lucide React 1.16</code></td><td>Consistent SVG icon set</td></tr>
+    <tr><td>PDF Generation</td><td><code>jsPDF 4.2</code></td><td>Server-side resume PDF creation</td></tr>
+    <tr><td>Fonts</td><td>Space Grotesk, JetBrains Mono</td><td>Primary sans-serif &amp; monospace via <code>next/font/google</code></td></tr>
+    <tr><td>CSS Processing</td><td><code>PostCSS</code>, <code>Autoprefixer</code></td><td>Tailwind compilation and vendor prefixing</td></tr>
+    <tr><td>Linting</td><td><code>ESLint</code> (next config)</td><td>Code quality enforcement</td></tr>
+  </tbody>
+</table>
+
+<!-- =============================== -->
+<!-- ARCHITECTURE                    -->
+<!-- =============================== -->
+<h2 id="architecture">Architecture</h2>
+
+<p>The application follows the <strong>Next.js App Router</strong> pattern with a single-page layout. All sections are client-side React components loaded in the root page. The only server-side logic is the PDF generation API route.</p>
+
+<div class="arch-diagram">
+  <div class="arch-box">
+    <div class="label">Entry</div>
+    <div class="value">layout.tsx</div>
+  </div>
+  <div class="arch-arrow">→</div>
+  <div class="arch-box">
+    <div class="label">Page</div>
+    <div class="value">page.tsx</div>
+  </div>
+  <div class="arch-arrow">→</div>
+  <div class="arch-box">
+    <div class="label">Sections</div>
+    <div class="value">11 Components</div>
+  </div>
+</div>
+
+<div class="arch-diagram">
+  <div class="arch-box" style="border-color:var(--accent);">
+    <div class="label">Provider</div>
+    <div class="value">ThemeProvider</div>
+  </div>
+  <div class="arch-arrow">↕</div>
+  <div class="arch-box" style="border-color:var(--accent);">
+    <div class="label">Context</div>
+    <div class="value">theme + toggleTheme</div>
+  </div>
+  <div class="arch-arrow">↕</div>
+  <div class="arch-box" style="border-color:var(--accent);">
+    <div class="label">Storage</div>
+    <div class="value">localStorage</div>
+  </div>
+</div>
+
+<h3>Data Flow</h3>
+<ol>
+  <li><code>layout.tsx</code> wraps the app in <code>&lt;ThemeProvider&gt;</code> and loads Google Fonts via CSS variables.</li>
+  <li><code>page.tsx</code> renders a splash screen with <code>AnimatePresence</code>, then reveals all section components.</li>
+  <li>Each section component is a self-contained <code>"use client"</code> module with its own data (hardcoded arrays/objects).</li>
+  <li><code>ScrollReveal</code> wraps section content to trigger viewport-based entrance animations.</li>
+  <li>The <code>Navbar</code> reads the theme context to render a dark/light toggle and tracks scroll position for active section highlighting.</li>
+  <li>The <code>/api/resume</code> route generates a PDF on the server and returns it as a binary download.</li>
+</ol>
+
+<!-- =============================== -->
+<!-- DIRECTORY LAYOUT                -->
+<!-- =============================== -->
+<h2 id="directory">Directory Layout</h2>
+
+<div class="file-tree">
+<pre style="background:var(--code-bg);color:var(--text);"><code><span class="dir">my-portfolio/</span>
+├── <span class="file">next.config.js</span>          <span class="desc"># Next.js configuration</span>
+├── <span class="file">package.json</span>            <span class="desc"># Dependencies &amp; scripts</span>
+├── <span class="file">postcss.config.js</span>       <span class="desc"># PostCSS plugins (Tailwind, Autoprefixer)</span>
+├── <span class="file">tailwind.config.ts</span>      <span class="desc"># Tailwind theme customization</span>
+├── <span class="file">tsconfig.json</span>           <span class="desc"># TypeScript compiler options</span>
+├── <span class="file">next-env.d.ts</span>           <span class="desc"># Next.js type declarations</span>
+│
+├── <span class="dir">public/</span>                 <span class="desc"># Static assets (images, favicon)</span>
+│
+├── <span class="dir">src/</span>
+│   ├── <span class="dir">app/</span>
+│   │   ├── <span class="file">globals.css</span>     <span class="desc"># Global styles, CSS variables, Tailwind directives</span>
+│   │   ├── <span class="file">layout.tsx</span>      <span class="desc"># Root layout — metadata, fonts, ThemeProvider</span>
+│   │   ├── <span class="file">page.tsx</span>        <span class="desc"># Home page — splash screen + all sections</span>
+│   │   └── <span class="dir">api/</span>
+│   │       └── <span class="dir">resume/</span>
+│   │           └── <span class="file">route.ts</span> <span class="desc"># GET endpoint — generates PDF resume</span>
+│   │
+│   ├── <span class="dir">components/</span>
+│   │   ├── <span class="file">About.tsx</span>       <span class="desc"># Bio, stats, tech stack badges</span>
+│   │   ├── <span class="file">Contact.tsx</span>     <span class="desc"># Contact info + form with validation</span>
+│   │   ├── <span class="file">Education.tsx</span>   <span class="desc"># Degree &amp; certifications</span>
+│   │   ├── <span class="file">Experience.tsx</span>  <span class="desc"># Work timeline with descriptions</span>
+│   │   ├── <span class="file">Footer.tsx</span>      <span class="desc"># Copyright + social links</span>
+│   │   ├── <span class="file">Hero.tsx</span>        <span class="desc"># Landing section with typing effect</span>
+│   │   ├── <span class="file">Navbar.tsx</span>      <span class="desc"># Fixed nav with scroll tracking &amp; theme toggle</span>
+│   │   ├── <span class="file">Projects.tsx</span>    <span class="desc"># Project cards grid</span>
+│   │   ├── <span class="file">ScrollReveal.tsx</span><span class="desc"> # Reusable scroll-triggered animation wrapper</span>
+│   │   ├── <span class="file">Skills.tsx</span>      <span class="desc"># Skill categories with progress bars</span>
+│   │   └── <span class="file">ThemeProvider.tsx</span><span class="desc"># React Context for dark/light theme</span>
+│   │
+│   └── <span class="dir">types/</span>
+│       └── <span class="file">global.d.ts</span>     <span class="desc"># CSS module type declaration</span>
+│
+└── <span class="dir">chroma_data/</span>            <span class="desc"># ChromaDB vector storage (not used in portfolio UI)</span></code></pre>
+</div>
+
+<!-- =============================== -->
+<!-- CONFIGURATION FILES             -->
+<!-- =============================== -->
+<h2 id="config-files">Configuration Files</h2>
+
+<h3>next.config.js</h3>
+<p>Minimal configuration with no custom output target set.</p>
+<pre><code><span class="keyword">const</span> nextConfig = {
+  output: <span class="keyword">undefined</span>,
+};
+<span class="keyword">module</span>.exports = nextConfig;</code></pre>
+
+<h3>tsconfig.json</h3>
+<p>Uses <code>strict: true</code>, ESNext modules with bundler resolution, and a path alias <code>@/*</code> mapped to <code>./src/*</code>.</p>
+<pre><code>{
+  <span class="string">"compilerOptions"</span>: {
+    <span class="string">"strict"</span>: <span class="keyword">true</span>,
+    <span class="string">"module"</span>: <span class="string">"esnext"</span>,
+    <span class="string">"moduleResolution"</span>: <span class="string">"bundler"</span>,
+    <span class="string">"jsx"</span>: <span class="string">"preserve"</span>,
+    <span class="string">"paths"</span>: { <span class="string">"@/*"</span>: [<span class="string">"./src/*"</span>] }
+  }
+}</code></pre>
+
+<h3>tailwind.config.ts</h3>
+<p>Extends the default Tailwind theme with custom color palettes, font families, and keyframe animations. Uses <code>darkMode: "class"</code> for theme toggling.</p>
+
+<table>
+  <thead><tr><th>Color Token</th><th>Role</th><th>Sample (500)</th></tr></thead>
+  <tbody>
+    <tr><td><code>primary-*</code></td><td>Brand blue (links, accents, gradients)</td><td><span style="display:inline-block;width:14px;height:14px;background:#338dfc;border-radius:3px;vertical-align:middle;"></span> #338dfc</td></tr>
+    <tr><td><code>accent-*</code></td><td>Warm orange (secondary highlights)</td><td><span style="display:inline-block;width:14px;height:14px;background:#f97316;border-radius:3px;vertical-align:middle;"></span> #f97316</td></tr>
+    <tr><td><code>dark-*</code></td><td>Neutral grays (backgrounds, text, borders)</td><td><span style="display:inline-block;width:14px;height:14px;background:#686891;border-radius:3px;vertical-align:middle;"></span> #686891</td></tr>
+  </tbody>
+</table>
+
+<!-- =============================== -->
+<!-- COMPONENT OVERVIEW              -->
+<!-- =============================== -->
+<h2 id="comp-overview">Component Overview</h2>
+
+<p>All components are client-side (<code>"use client"</code>) React functional components located in <code>src/components/</code>. Each section is self-contained with its own data, markup, and styling.</p>
+
+<table>
+  <thead><tr><th>Component</th><th>File</th><th>Props</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>Navbar</td><td><code>Navbar.tsx</code></td><td>None</td><td>Fixed header with scroll-aware active link, mobile drawer, theme toggle</td></tr>
+    <tr><td>Hero</td><td><code>Hero.tsx</code></td><td>None</td><td>Full-viewport landing with typing effect, animated background orbs</td></tr>
+    <tr><td>About</td><td><code>About.tsx</code></td><td>None</td><td>Bio text, stat cards, color-coded tech stack badges</td></tr>
+    <tr><td>Experience</td><td><code>Experience.tsx</code></td><td>None</td><td>Timeline layout with role details, bullet points, tech tags</td></tr>
+    <tr><td>Projects</td><td><code>Projects.tsx</code></td><td>None</td><td>Responsive card grid for 7 projects with colored headers</td></tr>
+    <tr><td>Skills</td><td><code>Skills.tsx</code></td><td>None</td><td>6 category cards with animated progress bars</td></tr>
+    <tr><td>Education</td><td><code>Education.tsx</code></td><td>None</td><td>Degree card + certification list</td></tr>
+    <tr><td>Contact</td><td><code>Contact.tsx</code></td><td>None</td><td>Contact info links + validated form (client-only)</td></tr>
+    <tr><td>Footer</td><td><code>Footer.tsx</code></td><td>None</td><td>Copyright notice, social media links</td></tr>
+    <tr><td>ScrollReveal</td><td><code>ScrollReveal.tsx</code></td><td><code>children, delay, direction, width, className</code></td><td>Reusable wrapper for viewport-triggered entrance animations</td></tr>
+    <tr><td>ThemeProvider</td><td><code>ThemeProvider.tsx</code></td><td><code>children</code></td><td>React Context providing <code>theme</code> and <code>toggleTheme()</code></td></tr>
+  </tbody>
+</table>
+
+<!-- =============================== -->
+<!-- LAYOUT & PROVIDERS              -->
+<!-- =============================== -->
+<h2 id="comp-layout">Layout &amp; Providers</h2>
+
+<h3>layout.tsx (Root Layout)</h3>
+<p>Located at <code>src/app/layout.tsx</code>. Responsible for:</p>
+<ul>
+  <li><strong>Metadata</strong> — Sets page title (<em>"Indupalli Sumanth | Software Engineer"</em>), description, keywords, author, and Open Graph tags.</li>
+  <li><strong>Font loading</strong> — Loads <strong>Space Grotesk</strong> (sans-serif) and <strong>JetBrains Mono</strong> (monospace) via <code>next/font/google</code>, injecting CSS variables <code>--font-space-grotesk</code> and <code>--font-jetbrains-mono</code>.</li>
+  <li><strong>Theme setup</strong> — Wraps <code>{children}</code> in <code>&lt;ThemeProvider&gt;</code>. Sets <code>className="dark"</code> on <code>&lt;html&gt;</code> as the default theme with <code>suppressHydrationWarning</code> to avoid hydration mismatch.</li>
+</ul>
+
+<!-- =============================== -->
+<!-- PAGE & SPLASH                   -->
+<!-- =============================== -->
+<h2 id="comp-page">Page &amp; Splash Screen</h2>
+
+<h3>page.tsx (Home Page)</h3>
+<p>Located at <code>src/app/page.tsx</code>. The single entry point that composes all sections.</p>
+
+<h4>Splash Screen</h4>
+<p>A <code>SplashScreen</code> component renders for <strong>2.2 seconds</strong> before fading out. It displays:</p>
+<ul>
+  <li>An animated logo <code>&lt;IS /&gt;</code> that scales in from 0 with a rotation.</li>
+  <li>A "Loading portfolio..." text that fades in after 0.6s.</li>
+  <li>A gradient progress bar that animates from 0 to 100% width.</li>
+</ul>
+<p>Uses <code>AnimatePresence</code> with <code>mode="wait"</code> for a smooth exit transition before revealing the main content.</p>
+
+<h4>Section Rendering Order</h4>
+<pre><code>&lt;Navbar /&gt;
+&lt;main&gt;
+  &lt;Hero /&gt;
+  &lt;About /&gt;
+  &lt;Experience /&gt;
+  &lt;Projects /&gt;
+  &lt;Skills /&gt;
+  &lt;Education /&gt;
+  &lt;Contact /&gt;
+&lt;/main&gt;
+&lt;Footer /&gt;</code></pre>
+
+<!-- =============================== -->
+<!-- NAVBAR                          -->
+<!-- =============================== -->
+<h2 id="comp-navbar">Navbar</h2>
+
+<p>Fixed navigation bar at the top of the viewport.</p>
+
+<h4>Features</h4>
+<ul>
+  <li><strong>Scroll tracking</strong> — Uses a <code>scroll</code> event listener to detect which section is currently in view (by iterating nav links in reverse and checking <code>getBoundingClientRect().top &lt;= 150</code>). The active link gets a pill-shaped highlight animated with Framer Motion's <code>layoutId</code>.</li>
+  <li><strong>Glass morphism</strong> — After scrolling past 50px, applies a <code>.glass</code> (dark) or <code>.glass-light</code> (light) backdrop-blur class.</li>
+  <li><strong>Theme toggle button</strong> — Renders a Sun/Moon icon that calls <code>toggleTheme()</code> from <code>ThemeProvider</code>.</li>
+  <li><strong>Mobile drawer</strong> — On screens &lt; 768px, a hamburger button toggles a slide-down menu animated with <code>AnimatePresence</code>.</li>
+</ul>
+
+<h4>Navigation Links</h4>
+<table>
+  <thead><tr><th>Label</th><th>Target</th></tr></thead>
+  <tbody>
+    <tr><td>Home</td><td><code>#hero</code></td></tr>
+    <tr><td>About</td><td><code>#about</code></td></tr>
+    <tr><td>Experience</td><td><code>#experience</code></td></tr>
+    <tr><td>Projects</td><td><code>#projects</code></td></tr>
+    <tr><td>Skills</td><td><code>#skills</code></td></tr>
+    <tr><td>Education</td><td><code>#education</code></td></tr>
+    <tr><td>Contact</td><td><code>#contact</code></td></tr>
+  </tbody>
+</table>
+
+<!-- =============================== -->
+<!-- HERO                            -->
+<!-- =============================== -->
+<h2 id="comp-hero">Hero</h2>
+
+<p>Full-viewport introductory section with animated visual elements.</p>
+
+<h4>Animated Background</h4>
+<ul>
+  <li><strong>Grid pattern</strong> — CSS-generated grid lines using <code>linear-gradient</code> background with 60px spacing.</li>
+  <li><strong>Floating orbs</strong> — Three <code>motion.div</code> elements with large blur filters that animate position and scale on infinite loops (15–25s durations).</li>
+  <li><strong>Geometric shapes</strong> — Six rotating bordered squares positioned across the viewport, pulsing in opacity.</li>
+</ul>
+
+<h4>Typing Effect</h4>
+<p>A custom <code>useEffect</code>-based typing animation cycles through four roles:</p>
+<ol>
+  <li>Software Engineer</li>
+  <li>Full Stack Developer</li>
+  <li>Backend Developer</li>
+  <li>Problem Solver</li>
+</ol>
+<p>Types forward at 80ms/char, pauses 2s, deletes at 40ms/char, then moves to the next role. A blinking cursor (<code>motion.span</code>) follows the text.</p>
+
+<h4>Call-to-Action Buttons</h4>
+<ul>
+  <li><strong>Get In Touch</strong> — Scrolls to the Contact section.</li>
+  <li><strong>View Projects</strong> — Scrolls to the Projects section.</li>
+  <li><strong>Download Resume</strong> — Triggers <code>GET /api/resume</code> to download a PDF.</li>
+</ul>
+
+<!-- =============================== -->
+<!-- ABOUT                           -->
+<!-- =============================== -->
+<h2 id="comp-about">About</h2>
+
+<p>Two-column grid: bio text on the left, tech stack badges on the right.</p>
+
+<h4>Bio Section</h4>
+<p>Three paragraphs describing professional background, CS fundamentals, and work style. Below them, three stat cards:</p>
+<table>
+  <thead><tr><th>Stat</th><th>Value</th></tr></thead>
+  <tbody>
+    <tr><td>Years Experience</td><td>2+</td></tr>
+    <tr><td>Certifications</td><td>5+</td></tr>
+    <tr><td>Technologies</td><td>10+</td></tr>
+  </tbody>
+</table>
+
+<h4>Tech Stack Badges</h4>
+<p>13 badges organized into 5 color-coded categories:</p>
+<table>
+  <thead><tr><th>Category</th><th>Color</th><th>Technologies</th></tr></thead>
+  <tbody>
+    <tr><td>Languages</td><td><span class="tag blue">Blue</span></td><td>Java, C++, Python, TypeScript</td></tr>
+    <tr><td>Frameworks</td><td><span class="tag green">Green</span></td><td>Angular, Node.js, RESTful APIs, Next.js</td></tr>
+    <tr><td>Databases</td><td><span class="tag amber">Amber</span></td><td>PostgreSQL, SQL</td></tr>
+    <tr><td>Cloud</td><td><span class="tag" style="background:#ede9fe;color:#6d28d9;">Violet</span></td><td>AWS (S3)</td></tr>
+    <tr><td>Tools</td><td><span class="tag rose">Rose</span></td><td>Git, VS Code</td></tr>
+  </tbody>
+</table>
+
+<!-- =============================== -->
+<!-- EXPERIENCE                      -->
+<!-- =============================== -->
+<h2 id="comp-experience">Experience</h2>
+
+<p>Vertical timeline layout with a gradient line and dot markers.</p>
+
+<div class="card">
+  <div class="card-title">Packaged App Development Associate — Accenture</div>
+  <div class="card-desc">Hyderabad, India &bull; Feb 2024 – Present &bull; Project: Supplier Hub</div>
+  <ul style="margin-top:0.75rem;font-size:0.9rem;">
+    <li>Designed, developed, and maintained backend and frontend of a multi-tier enterprise application.</li>
+    <li>Implemented complex PostgreSQL database functions for high-volume supplier data integration into SAP.</li>
+    <li>Developed scalable RESTful APIs using Node.js for report generation.</li>
+    <li>Built dynamic, reusable Angular UI components for user-centric workflows.</li>
+    <li>Applied OOP design principles and data structures for efficient business logic.</li>
+    <li>Contributed to code reviews, debugging, and issue resolution.</li>
+  </ul>
+  <div style="margin-top:0.75rem;">
+    <span class="tag">Angular</span><span class="tag">Node.js</span><span class="tag">PostgreSQL</span><span class="tag">SAP</span><span class="tag">RESTful APIs</span><span class="tag">Git</span>
+  </div>
+</div>
+
+<p>The timeline adapts between desktop (alternating left/right cards) and mobile (single column with left padding).</p>
+
+<!-- =============================== -->
+<!-- PROJECTS                        -->
+<!-- =============================== -->
+<h2 id="comp-projects">Projects</h2>
+
+<p>Responsive card grid (3 columns on desktop, 2 on tablet, 1 on mobile). Each card has a colored top bar, icon, title, description, and tech tags.</p>
+
+<table>
+  <thead><tr><th>#</th><th>Project</th><th>Featured</th><th>Tech Stack</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Supplier Hub</td><td>✅</td><td>Angular, Node.js, PostgreSQL, SAP, REST APIs</td></tr>
+    <tr><td>2</td><td>API Report Generator</td><td>✅</td><td>Node.js, Express, PostgreSQL, REST APIs, Redis</td></tr>
+    <tr><td>3</td><td>RAG Q&amp;A Agent</td><td>✅</td><td>Python, FastAPI, LangChain, OpenAI, PostgreSQL, pgvector, Next.js, AWS S3</td></tr>
+    <tr><td>4</td><td>Cloud Storage Manager</td><td></td><td>React, AWS S3, Node.js, TypeScript, Tailwind CSS</td></tr>
+    <tr><td>5</td><td>Data Pipeline Optimizer</td><td></td><td>Python, PostgreSQL, Apache Kafka, Docker</td></tr>
+    <tr><td>6</td><td>Portfolio Website</td><td></td><td>Next.js, TypeScript, Tailwind CSS, Framer Motion</td></tr>
+    <tr><td>7</td><td>Algorithm Visualizer</td><td></td><td>React, TypeScript, D3.js, CSS Modules</td></tr>
+  </tbody>
+</table>
+
+<p>Each card features a hover effect (<code>translateY(-8px)</code>) and a gradient overlay on hover.</p>
+
+<!-- =============================== -->
+<!-- SKILLS                          -->
+<!-- =============================== -->
+<h2 id="comp-skills">Skills</h2>
+
+<p>Six category cards displayed in a 3-column grid. Each card contains a header with an icon and a list of skills with animated progress bars.</p>
+
+<table>
+  <thead><tr><th>Category</th><th>Bar Color</th><th>Skills &amp; Levels</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Programming Languages</td>
+      <td><span style="display:inline-block;width:40px;height:6px;background:linear-gradient(to right,#3b82f6,#06b6d4);border-radius:3px;vertical-align:middle;"></span></td>
+      <td>Java 90%, C++ 85%, Python 80%, TypeScript 75%, JavaScript 85%</td>
+    </tr>
+    <tr>
+      <td>Web Development</td>
+      <td><span style="display:inline-block;width:40px;height:6px;background:linear-gradient(to right,#10b981,#14b8a6);border-radius:3px;vertical-align:middle;"></span></td>
+      <td>Angular 85%, Node.js 85%, RESTful APIs 90%, Next.js 70%, React 75%</td>
+    </tr>
+    <tr>
+      <td>Databases</td>
+      <td><span style="display:inline-block;width:40px;height:6px;background:linear-gradient(to right,#f59e0b,#f97316);border-radius:3px;vertical-align:middle;"></span></td>
+      <td>PostgreSQL 90%, SQL (Advanced) 85%, Functions &amp; Queries 85%, Optimization 80%</td>
+    </tr>
+    <tr>
+      <td>Cloud &amp; DevOps</td>
+      <td><span style="display:inline-block;width:40px;height:6px;background:linear-gradient(to right,#8b5cf6,#a855f7);border-radius:3px;vertical-align:middle;"></span></td>
+      <td>AWS (S3) 75%, CI/CD 70%, Docker 65%</td>
+    </tr>
+    <tr>
+      <td>Engineering Practices</td>
+      <td><span style="display:inline-block;width:40px;height:6px;background:linear-gradient(to right,#f43f5e,#ec4899);border-radius:3px;vertical-align:middle;"></span></td>
+      <td>SDLC 90%, Code Reviews 85%, Unit Testing 80%, Git 90%, Agile 85%</td>
+    </tr>
+    <tr>
+      <td>Computer Science</td>
+      <td><span style="display:inline-block;width:40px;height:6px;background:linear-gradient(to right,#06b6d4,#0ea5e9);border-radius:3px;vertical-align:middle;"></span></td>
+      <td>Data Structures 90%, Algorithms 85%, OOP 90%, Design Patterns 80%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Progress bars animate from 0 to their target width using <code>whileInView</code> with <code>viewport: { once: true }</code> and staggered delays.</p>
+
+<!-- =============================== -->
+<!-- EDUCATION                       -->
+<!-- =============================== -->
+<h2 id="comp-education">Education</h2>
+
+<p>Two-column grid: education on the left, certifications on the right.</p>
+
+<h4>Degree</h4>
+<div class="card">
+  <div class="card-title">B.Tech in Information Technology</div>
+  <div class="card-desc">Prasad V. Potluri Siddhartha Institute of Technology &bull; Andhra Pradesh, India &bull; Jun 2019 – May 2023</div>
+</div>
+
+<h4>Certifications (5)</h4>
+<ol>
+  <li>Google Cloud Digital Leader — <em>Google Cloud</em></li>
+  <li>AWS Academy Graduate – Cloud Foundations — <em>Amazon Web Services</em></li>
+  <li>SQL (Basic) &amp; SQL (Advanced) — <em>HackerRank</em></li>
+  <li>Python Basic Certificate — <em>HackerRank</em></li>
+  <li>Java Training — <em>Professional Certification</em></li>
+</ol>
+
+<!-- =============================== -->
+<!-- CONTACT                         -->
+<!-- =============================== -->
+<h2 id="comp-contact">Contact</h2>
+
+<p>Split layout: contact info links (left) and a validated form (right).</p>
+
+<h4>Contact Information</h4>
+<table>
+  <thead><tr><th>Channel</th><th>Value</th></tr></thead>
+  <tbody>
+    <tr><td>Email</td><td>isumanth8@gmail.com</td></tr>
+    <tr><td>LinkedIn</td><td>linkedin.com/in/indupalli-sumanth-07b6651b8</td></tr>
+    <tr><td>GitHub</td><td>github.com/sumanth-indupalli</td></tr>
+    <tr><td>Location</td><td>Hyderabad, India</td></tr>
+  </tbody>
+</table>
+
+<h4>Form Validation Rules</h4>
+<table>
+  <thead><tr><th>Field</th><th>Type</th><th>Rules</th></tr></thead>
+  <tbody>
+    <tr><td>Name</td><td><code>text</code></td><td>Required, minimum 2 characters</td></tr>
+    <tr><td>Email</td><td><code>email</code></td><td>Required, validated via regex <code>/^[^\s@]+@[^\s@]+\.[^\s@]+$/</code></td></tr>
+    <tr><td>Message</td><td><code>textarea</code></td><td>Required, minimum 10 characters</td></tr>
+  </tbody>
+</table>
+
+<p>On successful validation, a success toast appears for 5 seconds. The form is client-side only (no backend submission).</p>
+
+<!-- =============================== -->
+<!-- FOOTER                          -->
+<!-- =============================== -->
+<h2 id="comp-footer">Footer</h2>
+<p>Displays copyright text with the current year (dynamic via <code>new Date().getFullYear()</code>), a heart icon, and three social media icon links (GitHub, LinkedIn, Email) with hover animations.</p>
+
+<!-- =============================== -->
+<!-- SCROLLREVEAL                    -->
+<!-- =============================== -->
+<h2 id="comp-scrollreveal">ScrollReveal</h2>
+
+<p>A reusable wrapper component that animates its children into view when scrolled into the viewport.</p>
+
+<h4>Props</h4>
+<table>
+  <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><code>children</code></td><td><code>ReactNode</code></td><td>—</td><td>Content to reveal</td></tr>
+    <tr><td><code>direction</code></td><td><code>"up" | "down" | "left" | "right"</code></td><td><code>"up"</code></td><td>Direction from which the content enters</td></tr>
+    <tr><td><code>delay</code></td><td><code>number</code></td><td><code>0</code></td><td>Animation delay in seconds</td></tr>
+    <tr><td><code>width</code></td><td><code>"fit-content" | "100%"</code></td><td><code>"100%"</code></td><td>Container width</td></tr>
+    <tr><td><code>className</code></td><td><code>string</code></td><td><code>""</code></td><td>Additional CSS classes</td></tr>
+  </tbody>
+</table>
+
+<h4>Implementation</h4>
+<p>Uses Framer Motion's <code>useInView</code> hook (with <code>once: true</code> and <code>margin: "-100px"</code>) to detect visibility, then triggers <code>useAnimation</code> to transition from <code>hidden</code> (60px offset, opacity 0) to <code>visible</code> (0 offset, opacity 1) over 0.6 seconds with an <code>easeOut</code> curve.</p>
+
+<!-- =============================== -->
+<!-- THEMEPROVIDER                   -->
+<!-- =============================== -->
+<h2 id="comp-themeprovider">ThemeProvider</h2>
+
+<p>React Context provider managing dark/light theme state.</p>
+
+<h4>Context Value</h4>
+<pre><code><span class="keyword">interface</span> <span class="type">ThemeContextType</span> {
+  theme: <span class="string">"dark"</span> | <span class="string">"light"</span>;
+  <span class="fn">toggleTheme</span>: () => <span class="keyword">void</span>;
+}</code></pre>
+
+<h4>Behavior</h4>
+<ol>
+  <li>On mount, reads <code>localStorage.getItem("theme")</code>. Falls back to <code>"dark"</code>.</li>
+  <li>Adds/removes <code>dark</code> / <code>light</code> class on <code>document.documentElement</code>.</li>
+  <li>Persists choice to localStorage on every change.</li>
+  <li>Before hydration completes (<code>mounted === false</code>), renders children in a plain <code>&lt;div className="dark"&gt;</code> to prevent flash of unstyled content.</li>
+</ol>
+
+<p>Consumed via the <code>useTheme()</code> hook in <code>Navbar.tsx</code>.</p>
+
+<!-- =============================== -->
+<!-- API — RESUME                    -->
+<!-- =============================== -->
+<h2 id="api-resume">API: Resume PDF Endpoint</h2>
+
+<table>
+  <thead><tr><th>Property</th><th>Value</th></tr></thead>
+  <tbody>
+    <tr><td>Route</td><td><code>GET /api/resume</code></td></tr>
+    <tr><td>File</td><td><code>src/app/api/resume/route.ts</code></td></tr>
+    <tr><td>Library</td><td><code>jsPDF 4.2</code></td></tr>
+    <tr><td>Output</td><td>A4 PDF (mm units)</td></tr>
+    <tr><td>Filename</td><td><code>Indupalli_Sumanth_Resume.pdf</code></td></tr>
+    <tr><td>Content-Type</td><td><code>application/pdf</code></td></tr>
+  </tbody>
+</table>
+
+<h4>PDF Sections (in order)</h4>
+<ol>
+  <li><strong>Header</strong> — Name (22pt bold), subtitle with key skills, contact info (email, location, LinkedIn)</li>
+  <li><strong>Professional Summary</strong> — Single paragraph (9.5pt)</li>
+  <li><strong>Technical Skills</strong> — 6 key-value rows (Programming Languages, Web Development, Database, CS, Cloud &amp; Tools, Engineering Practices)</li>
+  <li><strong>Experience</strong> — Accenture role with 7 bullet points</li>
+  <li><strong>Education</strong> — B.Tech degree details</li>
+  <li><strong>Certifications</strong> — 5 items as a bulleted list</li>
+</ol>
+
+<p>The PDF is generated server-side on each request — no caching. It returns the buffer via <code>NextResponse</code> with a <code>Content-Disposition: attachment</code> header.</p>
+
+<!-- =============================== -->
+<!-- DESIGN SYSTEM                   -->
+<!-- =============================== -->
+<h2 id="design-system">Design System</h2>
+
+<h3>Typography</h3>
+<table>
+  <thead><tr><th>Role</th><th>Font</th><th>CSS Variable</th></tr></thead>
+  <tbody>
+    <tr><td>Headings &amp; Body</td><td>Space Grotesk</td><td><code>--font-space-grotesk</code></td></tr>
+    <tr><td>Code &amp; Monospace</td><td>JetBrains Mono</td><td><code>--font-jetbrains-mono</code></td></tr>
+  </tbody>
+</table>
+
+<h3>Color Palette</h3>
+<p>Three custom color scales defined in <code>tailwind.config.ts</code>, each with shades 50–950:</p>
+<ul>
+  <li><strong>Primary (Blue)</strong> — Brand identity, links, active states, gradient start</li>
+  <li><strong>Accent (Orange)</strong> — Secondary highlights, gradient end, certification badges</li>
+  <li><strong>Dark (Neutral)</strong> — Backgrounds (<code>dark-950</code>: #0f0f1a), text, cards, borders</li>
+</ul>
+
+<h3>Utility Classes</h3>
+<table>
+  <thead><tr><th>Class</th><th>Source</th><th>Effect</th></tr></thead>
+  <tbody>
+    <tr><td><code>.text-gradient</code></td><td><code>globals.css</code></td><td>Gradient text (primary-400 → primary-500 → accent-500)</td></tr>
+    <tr><td><code>.glass</code></td><td><code>globals.css</code></td><td>Dark mode glass: <code>backdrop-blur-xl bg-white/5 border-white/10</code></td></tr>
+    <tr><td><code>.glass-light</code></td><td><code>globals.css</code></td><td>Light mode glass: <code>backdrop-blur-xl bg-white/80 border-gray-200</code></td></tr>
+    <tr><td><code>.card-hover</code></td><td><code>globals.css</code></td><td>Lift + shadow on hover with 300ms transition</td></tr>
+  </tbody>
+</table>
+
+<!-- =============================== -->
+<!-- THEMING                         -->
+<!-- =============================== -->
+<h2 id="theming">Theming (Dark / Light)</h2>
+
+<p>Theme switching is implemented via Tailwind's <code>darkMode: "class"</code> strategy.</p>
+
+<h4>How It Works</h4>
+<ol>
+  <li><code>ThemeProvider</code> manages a <code>"dark" | "light"</code> state, persisted in <code>localStorage</code>.</li>
+  <li>On state change, adds/removes <code>.dark</code> / <code>.light</code> on <code>&lt;html&gt;</code>.</li>
+  <li>Components use Tailwind's <code>dark:</code> variant for conditional styles: <code>dark:bg-dark-950 bg-white</code>.</li>
+  <li>CSS variables in <code>globals.css</code> change based on <code>.light</code> class (foreground, background, card-bg, etc.).</li>
+</ol>
+
+<div class="callout warn">
+  <strong>Hydration Note</strong>
+  The initial HTML is always rendered with <code>className="dark"</code>. On client mount, the stored theme is applied. <code>suppressHydrationWarning</code> is set on <code>&lt;html&gt;</code> to prevent React warnings during this swap.
+</div>
+
+<!-- =============================== -->
+<!-- ANIMATIONS                      -->
+<!-- =============================== -->
+<h2 id="animations">Animations</h2>
+
+<h3>Framer Motion Animations</h3>
+<table>
+  <thead><tr><th>Animation</th><th>Component</th><th>Technique</th></tr></thead>
+  <tbody>
+    <tr><td>Splash logo spin</td><td>SplashScreen</td><td><code>initial → animate</code> (scale 0→1, rotate -180→0)</td></tr>
+    <tr><td>Splash progress bar</td><td>SplashScreen</td><td><code>width: 0 → 100%</code> over 1.2s</td></tr>
+    <tr><td>Page enter</td><td>Home</td><td><code>AnimatePresence</code> with opacity fade</td></tr>
+    <tr><td>Navbar slide-down</td><td>Navbar</td><td><code>initial={{ y: -100 }}</code> → <code>animate={{ y: 0 }}</code></td></tr>
+    <tr><td>Active link pill</td><td>Navbar</td><td><code>layoutId="activeSection"</code> shared layout</td></tr>
+    <tr><td>Hero orb float</td><td>Hero</td><td>Infinite keyframe loops (15–25s)</td></tr>
+    <tr><td>Typing effect</td><td>Hero</td><td>Custom <code>useEffect</code> with setTimeout chain</td></tr>
+    <tr><td>Scroll reveal</td><td>ScrollReveal</td><td><code>useInView</code> + <code>useAnimation</code> (4 directions)</td></tr>
+    <tr><td>Skill progress bars</td><td>Skills</td><td><code>whileInView={{ width }}</code> with stagger</td></tr>
+    <tr><td>Card hover lift</td><td>Multiple</td><td><code>whileHover={{ y: -4 to -8 }}</code></td></tr>
+    <tr><td>Tech badge pop</td><td>About</td><td><code>whileHover={{ scale: 1.1, y: -2 }}</code></td></tr>
+  </tbody>
+</table>
+
+<h3>Tailwind Keyframe Animations</h3>
+<table>
+  <thead><tr><th>Name</th><th>Duration</th><th>Effect</th></tr></thead>
+  <tbody>
+    <tr><td><code>gradient</code></td><td>8s</td><td>Background position shift (gradient animation)</td></tr>
+    <tr><td><code>float</code></td><td>6s</td><td>Vertical translate 0 → -20px → 0</td></tr>
+    <tr><td><code>pulse-slow</code></td><td>4s</td><td>Standard pulse with slow timing</td></tr>
+    <tr><td><code>glow</code></td><td>2s</td><td>Box-shadow intensity alternation</td></tr>
+  </tbody>
+</table>
+
+<!-- =============================== -->
+<!-- SETUP & COMMANDS                -->
+<!-- =============================== -->
+<h2 id="setup">Setup &amp; Commands</h2>
+
+<h3>Prerequisites</h3>
+<ul>
+  <li>Node.js 18+ (LTS recommended)</li>
+  <li>npm or yarn</li>
+</ul>
+
+<h3>Installation</h3>
+<pre><code><span class="comment"># Clone the repository</span>
+git clone &lt;repository-url&gt;
+cd my-portfolio
+
+<span class="comment"># Install dependencies</span>
+npm install</code></pre>
+
+<h3>Available Scripts</h3>
+<table>
+  <thead><tr><th>Command</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><code>npm run dev</code></td><td>Start development server with hot reload (default: <code>localhost:3000</code>)</td></tr>
+    <tr><td><code>npm run build</code></td><td>Create optimized production build in <code>.next/</code></td></tr>
+    <tr><td><code>npm run start</code></td><td>Serve the production build</td></tr>
+    <tr><td><code>npm run lint</code></td><td>Run ESLint across the project</td></tr>
+  </tbody>
+</table>
+
+<!-- =============================== -->
+<!-- DEPENDENCIES                    -->
+<!-- =============================== -->
+<h2 id="dependencies">Dependencies</h2>
+
+<table>
+  <thead><tr><th>Package</th><th>Version</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td><code>next</code></td><td>^14.2.35</td><td>React framework (App Router, SSR, API routes)</td></tr>
+    <tr><td><code>react</code></td><td>^18.3.1</td><td>UI library</td></tr>
+    <tr><td><code>react-dom</code></td><td>^18.3.1</td><td>React DOM renderer</td></tr>
+    <tr><td><code>typescript</code></td><td>^6.0.3</td><td>Type checking</td></tr>
+    <tr><td><code>tailwindcss</code></td><td>^3.4.19</td><td>Utility-first CSS framework</td></tr>
+    <tr><td><code>postcss</code></td><td>^8.5.15</td><td>CSS processing pipeline</td></tr>
+    <tr><td><code>autoprefixer</code></td><td>^10.5.0</td><td>Vendor prefixing</td></tr>
+    <tr><td><code>framer-motion</code></td><td>^12.40.0</td><td>Animation library</td></tr>
+    <tr><td><code>lucide-react</code></td><td>^1.16.0</td><td>Icon library</td></tr>
+    <tr><td><code>jspdf</code></td><td>^4.2.1</td><td>PDF generation (resume endpoint)</td></tr>
+    <tr><td><code>eslint</code></td><td>^8.57.1</td><td>Linter</td></tr>
+    <tr><td><code>eslint-config-next</code></td><td>^14.2.35</td><td>Next.js ESLint rules</td></tr>
+    <tr><td><code>@types/node</code></td><td>^25.9.1</td><td>Node.js type definitions</td></tr>
+    <tr><td><code>@types/react</code></td><td>^19.2.15</td><td>React type definitions</td></tr>
+  </tbody>
+</table>
+
+<!-- =============================== -->
+<!-- DEPLOYMENT                      -->
+<!-- =============================== -->
+<h2 id="deployment">Deployment</h2>
+
+<h3>Vercel (Recommended)</h3>
+<p>Next.js is built by Vercel — deploy with zero configuration:</p>
+<ol>
+  <li>Push the repository to GitHub.</li>
+  <li>Import the project at <a href="https://vercel.com/new">vercel.com/new</a>.</li>
+  <li>Vercel auto-detects Next.js and configures build settings.</li>
+  <li>Every push to <code>main</code> triggers a production deployment.</li>
+</ol>
+
+<h3>Static Export (Optional)</h3>
+<p>To export as a static site, set <code>output: "export"</code> in <code>next.config.js</code>. Note: the <code>/api/resume</code> route will not work in static mode as it requires a server runtime.</p>
+
+<h3>Docker</h3>
+<pre><code><span class="keyword">FROM</span> node:18-alpine
+<span class="keyword">WORKDIR</span> /app
+<span class="keyword">COPY</span> package*.json ./
+<span class="keyword">RUN</span> npm ci
+<span class="keyword">COPY</span> . .
+<span class="keyword">RUN</span> npm run build
+<span class="keyword">EXPOSE</span> 3000
+<span class="keyword">CMD</span> [<span class="string">"npm"</span>, <span class="string">"start"</span>]</code></pre>
+
+<hr style="margin:3rem 0;border:none;border-top:1px solid var(--border);" />
+<p style="text-align:center;color:var(--muted);font-size:0.85rem;">
+  Portfolio Documentation &bull; Indupalli Sumanth &bull; Generated May 2026
+</p>
+
+</main>
+</div>
+
+</body>
+</html>

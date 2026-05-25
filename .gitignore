@@ -1,0 +1,28 @@
+# dependencies
+node_modules/
+
+# next.js build
+.next/
+out/
+
+# misc
+.DS_Store
+*.tgz
+.env
+.env*.local
+
+# debug
+npm-debug.log*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# chroma data
+chroma_data/
+
+# database files
+*.db

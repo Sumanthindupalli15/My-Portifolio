@@ -9,24 +9,25 @@ interface Props {
   className?: string;
   delay?: number;
   direction?: "up" | "down" | "left" | "right";
+  once?: boolean;
 }
 
 const directionVariants: Record<string, { hidden: Variant; visible: Variant }> = {
   up: {
-    hidden: { opacity: 0, y: 60 },
-    visible: { opacity: 1, y: 0 },
+    hidden: { opacity: 0, y: 80, filter: "blur(4px)" },
+    visible: { opacity: 1, y: 0, filter: "blur(0px)" },
   },
   down: {
-    hidden: { opacity: 0, y: -60 },
-    visible: { opacity: 1, y: 0 },
+    hidden: { opacity: 0, y: -80, filter: "blur(4px)" },
+    visible: { opacity: 1, y: 0, filter: "blur(0px)" },
   },
   left: {
-    hidden: { opacity: 0, x: -60 },
-    visible: { opacity: 1, x: 0 },
+    hidden: { opacity: 0, x: -80, filter: "blur(4px)" },
+    visible: { opacity: 1, x: 0, filter: "blur(0px)" },
   },
   right: {
-    hidden: { opacity: 0, x: 60 },
-    visible: { opacity: 1, x: 0 },
+    hidden: { opacity: 0, x: 80, filter: "blur(4px)" },
+    visible: { opacity: 1, x: 0, filter: "blur(0px)" },
   },
 };
 
@@ -36,9 +37,10 @@ export default function ScrollReveal({
   className = "",
   delay = 0,
   direction = "up",
+  once = true,
 }: Props) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once, margin: "-80px" });
   const controls = useAnimation();
 
   useEffect(() => {
@@ -56,7 +58,7 @@ export default function ScrollReveal({
         initial="hidden"
         animate={controls}
         transition={{
-          duration: 0.6,
+          duration: 0.8,
           delay,
           ease: [0.21, 0.47, 0.32, 0.98],
         }}

@@ -1,8 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useRef } from "react";
 import ScrollReveal from "./ScrollReveal";
-import { ExternalLink, GitFork, Layers } from "lucide-react";
+import SectionHeading from "./SectionHeading";
+import { ExternalLink, GitBranch, Layers, ArrowUpRight } from "lucide-react";
 
 const projects = [
   {
@@ -13,7 +15,8 @@ const projects = [
     github: "#",
     live: "#",
     featured: true,
-    color: "from-primary-500/20 to-blue-500/20",
+    gradient: "from-indigo-500 to-blue-500",
+    accent: "indigo",
   },
   {
     title: "API Report Generator",
@@ -23,7 +26,8 @@ const projects = [
     github: "#",
     live: "#",
     featured: true,
-    color: "from-emerald-500/20 to-teal-500/20",
+    gradient: "from-emerald-500 to-teal-500",
+    accent: "emerald",
   },
   {
     title: "Cloud Storage Manager",
@@ -33,7 +37,8 @@ const projects = [
     github: "#",
     live: "#",
     featured: false,
-    color: "from-violet-500/20 to-purple-500/20",
+    gradient: "from-violet-500 to-purple-500",
+    accent: "violet",
   },
   {
     title: "Data Pipeline Optimizer",
@@ -43,17 +48,19 @@ const projects = [
     github: "#",
     live: "#",
     featured: false,
-    color: "from-amber-500/20 to-orange-500/20",
+    gradient: "from-amber-500 to-orange-500",
+    accent: "amber",
   },
   {
     title: "RAG Q&A Agent",
     description:
-      "AI-powered Q&A agent using Retrieval-Augmented Generation. Upload documents, embed them with OpenAI, store vectors in PostgreSQL (pgvector), and get accurate answers with source citations. Features a conversational Next.js interface with drag-and-drop upload, conversation history, and expandable source references.",
+      "AI-powered Q&A agent using Retrieval-Augmented Generation. Upload documents, embed them with OpenAI, store vectors in PostgreSQL (pgvector), and get accurate answers with source citations.",
     technologies: ["Python", "FastAPI", "LangChain", "OpenAI", "PostgreSQL", "pgvector", "Next.js", "AWS S3"],
     github: "https://github.com/yourusername/rag-qa-agent",
     live: "#",
     featured: true,
-    color: "from-indigo-500/20 to-cyan-500/20",
+    gradient: "from-cyan-500 to-sky-500",
+    accent: "cyan",
   },
   {
     title: "Portfolio Website",
@@ -63,7 +70,8 @@ const projects = [
     github: "#",
     live: "#",
     featured: false,
-    color: "from-rose-500/20 to-pink-500/20",
+    gradient: "from-rose-500 to-pink-500",
+    accent: "rose",
   },
   {
     title: "Algorithm Visualizer",
@@ -73,91 +81,120 @@ const projects = [
     github: "#",
     live: "#",
     featured: false,
-    color: "from-cyan-500/20 to-sky-500/20",
+    gradient: "from-sky-500 to-blue-500",
+    accent: "sky",
   },
 ];
 
+function ProjectCard({ project, index }: { project: typeof projects[0]; index: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [5, -5]), { damping: 20, stiffness: 200 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-5, 5]), { damping: 20, stiffness: 200 });
+
+  const handleMouse = (e: React.MouseEvent) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+
+  const handleLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
+  return (
+    <ScrollReveal delay={index * 0.08}>
+      <motion.div
+        ref={ref}
+        onMouseMove={handleMouse}
+        onMouseLeave={handleLeave}
+        style={{ rotateX, rotateY, transformPerspective: 1000 }}
+        className="h-full"
+      >
+        <div className="group relative h-full rounded-3xl dark:glass-card glass-card-light neon-border overflow-hidden transition-all duration-500 hover:border-primary-500/20">
+          {/* Top gradient accent line */}
+          <div className={`h-[2px] bg-gradient-to-r ${project.gradient} opacity-60 group-hover:opacity-100 transition-opacity duration-500`} />
+
+          {/* Hover glow overlay */}
+          <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-[0.02] transition-opacity duration-500 pointer-events-none`} />
+
+          <div className="p-7 flex flex-col h-full relative">
+            {/* Header */}
+            <div className="flex items-start justify-between mb-5">
+              <div className={`p-3 rounded-2xl bg-gradient-to-br ${project.gradient} bg-opacity-10 dark:bg-opacity-10`}>
+                <Layers size={22} className="text-white/80" />
+              </div>
+              <div className="flex items-center gap-1.5">
+                {project.github !== "#" && (
+                  <motion.a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.15, y: -2 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="p-2.5 rounded-xl dark:text-dark-500 text-dark-400 hover:text-primary-400 dark:hover:bg-white/5 hover:bg-gray-100 transition-all duration-300"
+                    aria-label="View source code"
+                  >
+                    <GitBranch size={18} />
+                  </motion.a>
+                )}
+                <motion.a
+                  href={project.live}
+                  whileHover={{ scale: 1.15, y: -2 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="p-2.5 rounded-xl dark:text-dark-500 text-dark-400 hover:text-primary-400 dark:hover:bg-white/5 hover:bg-gray-100 transition-all duration-300"
+                  aria-label="View live project"
+                >
+                  <ArrowUpRight size={18} />
+                </motion.a>
+              </div>
+            </div>
+
+            {/* Title & Description */}
+            <h3 className="text-xl font-bold dark:text-white text-dark-900 mb-3 group-hover:text-primary-400 transition-colors duration-300">
+              {project.title}
+            </h3>
+            <p className="text-sm dark:text-dark-400 text-dark-500 leading-relaxed mb-6 flex-grow">
+              {project.description}
+            </p>
+
+            {/* Tech tags */}
+            <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t dark:border-white/[0.04] border-gray-100">
+              {project.technologies.map((tech) => (
+                <span
+                  key={tech}
+                  className="px-3 py-1.5 text-xs rounded-lg dark:bg-white/[0.03] bg-gray-50 dark:text-dark-400 text-dark-500 font-mono border dark:border-white/[0.04] border-gray-200 hover:border-primary-500/20 hover:text-primary-400 transition-colors duration-300"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </ScrollReveal>
+  );
+}
+
 export default function Projects() {
   return (
-    <section id="projects" className="py-24 relative">
+    <section id="projects" className="py-32 relative overflow-hidden">
+      <div className="absolute top-0 left-0 right-0 h-px section-divider" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal>
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold dark:text-white text-dark-900 mb-4">
-              Featured <span className="text-gradient">Projects</span>
-            </h2>
-            <div className="w-20 h-1 bg-gradient-to-r from-primary-500 to-accent-500 mx-auto rounded-full" />
-            <p className="mt-4 dark:text-dark-400 text-dark-500 max-w-2xl mx-auto">
-              A selection of projects I&apos;ve worked on, ranging from enterprise applications to personal explorations.
-            </p>
-          </div>
-        </ScrollReveal>
+        <SectionHeading
+          title="Featured Projects"
+          gradient="from-indigo-400 to-cyan-400"
+          subtitle="A selection of projects I've worked on, ranging from enterprise applications to personal explorations"
+        />
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
-            <ScrollReveal key={project.title} delay={index * 0.1}>
-              <motion.div
-                whileHover={{ y: -8 }}
-                className="group relative h-full rounded-2xl dark:bg-dark-900/80 bg-white border dark:border-white/5 border-gray-200 overflow-hidden shadow-lg dark:shadow-none"
-              >
-                {/* Gradient header */}
-                <div
-                  className={`h-2 bg-gradient-to-r ${project.color}`}
-                />
-
-                <div className="p-6 flex flex-col h-full">
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="p-2 rounded-xl dark:bg-white/5 bg-gray-100">
-                      <Layers size={24} className="text-primary-400" />
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <motion.a
-                        href={project.github}
-                        whileHover={{ scale: 1.2 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="p-2 rounded-lg dark:text-dark-400 text-dark-500 hover:text-primary-400 dark:hover:bg-white/5 hover:bg-gray-100 transition-colors"
-                        aria-label="View source code"
-                      >
-                        <GitFork size={18} />
-                      </motion.a>
-                      <motion.a
-                        href={project.live}
-                        whileHover={{ scale: 1.2 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="p-2 rounded-lg dark:text-dark-400 text-dark-500 hover:text-primary-400 dark:hover:bg-white/5 hover:bg-gray-100 transition-colors"
-                        aria-label="View live project"
-                      >
-                        <ExternalLink size={18} />
-                      </motion.a>
-                    </div>
-                  </div>
-
-                  {/* Title & Description */}
-                  <h3 className="text-xl font-bold dark:text-white text-dark-900 mb-2 group-hover:text-primary-400 transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-sm dark:text-dark-400 text-dark-500 leading-relaxed mb-6 flex-grow">
-                    {project.description}
-                  </p>
-
-                  {/* Tech tags */}
-                  <div className="flex flex-wrap gap-2 mt-auto">
-                    {project.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2.5 py-1 text-xs rounded-lg dark:bg-white/5 bg-gray-100 dark:text-dark-300 text-dark-600 font-mono"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-primary-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-              </motion.div>
-            </ScrollReveal>
+            <ProjectCard key={project.title} project={project} index={index} />
           ))}
         </div>
       </div>

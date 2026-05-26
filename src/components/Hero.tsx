@@ -146,7 +146,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden spotlight"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden spotlight pt-20"
       onMouseMove={handleMouseMove}
     >
       <AuroraBackground />
@@ -155,7 +155,7 @@ export default function Hero() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+        className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-8"
       >
         {/* Badge */}
         <motion.div variants={itemVariants} className="mb-8">

@@ -70,18 +70,11 @@ export default function Navbar() {
               e.preventDefault();
               handleClick("#hero");
             }}
-            className="relative text-xl font-bold tracking-tight group"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
+            className="relative flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 via-purple-500 to-cyan-500 text-white font-bold text-sm tracking-tight shadow-lg shadow-primary-500/25"
+            whileHover={{ scale: 1.1, rotate: 5, boxShadow: "0 0 25px rgba(99,102,241,0.4)" }}
+            whileTap={{ scale: 0.95 }}
           >
-            <span className="text-gradient-hero">Indupalli</span>
-            <span className="dark:text-white text-dark-900 ml-1.5">Sumanth</span>
-            <motion.div
-              className="absolute -inset-2 rounded-lg bg-primary-500/5"
-              initial={{ opacity: 0 }}
-              whileHover={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-            />
+            IS
           </motion.a>
 
           {/* Desktop Nav */}

@@ -155,7 +155,7 @@ export default function Hero() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-8"
+        className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-8 pb-28"
       >
         {/* Badge */}
         <motion.div variants={itemVariants} className="mb-8">

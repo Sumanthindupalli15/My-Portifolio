@@ -53,13 +53,12 @@ export default function Footer() {
 
           {/* Logo */}
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, scale: 0.5 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="text-2xl font-bold"
+            className="flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-primary-500 via-purple-500 to-cyan-500 text-white font-bold text-xl shadow-lg shadow-primary-500/25"
           >
-            <span className="text-gradient-hero">Indupalli</span>
-            <span className="dark:text-white text-dark-900 ml-1.5">Sumanth</span>
+            IS
           </motion.div>
 
           {/* Copyright */}

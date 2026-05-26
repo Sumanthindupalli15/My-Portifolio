@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 
 export default function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -9,12 +9,14 @@ export default function ScrollProgress() {
     damping: 30,
     restDelta: 0.001,
   });
+  const opacity = useTransform(scrollYProgress, [0, 0.02], [0, 1]);
 
   return (
     <motion.div
       className="fixed top-0 left-0 right-0 h-[2px] z-[60] origin-left"
       style={{
         scaleX,
+        opacity,
         background: "linear-gradient(90deg, #6366f1, #a855f7, #06b6d4)",
       }}
     />

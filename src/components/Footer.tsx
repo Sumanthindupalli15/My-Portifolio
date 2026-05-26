@@ -7,7 +7,7 @@ import MagneticButton from "./MagneticButton";
 const socialLinks = [
   {
     icon: GitBranch,
-    href: "https://github.com/sumanth-indupalli",
+    href: "https://github.com/Sumanthindupalli15",
     label: "GitHub",
   },
   {

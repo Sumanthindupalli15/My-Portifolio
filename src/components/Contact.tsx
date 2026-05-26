@@ -10,6 +10,7 @@ import {
   Globe,
   GitBranch,
   MapPin,
+  Phone,
   CheckCircle,
   AlertCircle,
   ArrowUpRight,
@@ -90,6 +91,13 @@ export default function Contact() {
       gradient: "from-indigo-500 to-blue-500",
     },
     {
+      icon: Phone,
+      label: "Phone",
+      value: "+91 6305495130",
+      href: "tel:+916305495130",
+      gradient: "from-green-500 to-emerald-500",
+    },
+    {
       icon: Globe,
       label: "LinkedIn",
       value: "Indupalli Sumanth",
@@ -100,7 +108,7 @@ export default function Contact() {
       icon: GitBranch,
       label: "GitHub",
       value: "sumanth-indupalli",
-      href: "https://github.com/sumanth-indupalli",
+      href: "https://github.com/Sumanthindupalli15",
       gradient: "from-purple-500 to-pink-500",
     },
     {

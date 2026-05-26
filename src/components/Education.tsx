@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import ScrollReveal from "./ScrollReveal";
 import SectionHeading from "./SectionHeading";
-import { GraduationCap, Calendar, MapPin, Award, ExternalLink } from "lucide-react";
+import { GraduationCap, Calendar, MapPin, Award, ExternalLink, Code, Cloud } from "lucide-react";
 
 const education = [
   {
@@ -18,6 +18,15 @@ const certifications = [
   { name: "Generative AI Leader Certification", issuer: "Google Cloud", url: "https://www.credly.com/badges/d4564225-2c53-4615-b7e6-9aa4bd1fafbd/public_url", color: "from-purple-500 to-pink-500" },
   { name: "Cloud Digital Leader Certification", issuer: "Google Cloud", url: "https://www.credly.com/badges/f983d436-ba76-4844-95ef-a9e8f76c10fe/public_url", color: "from-blue-500 to-cyan-500" },
   { name: "Reinvention with Agentic AI", issuer: "Accenture", url: "https://www.credly.com/badges/fc6d0676-e79c-486a-85bf-21fcb4b41be1/public_url", color: "from-emerald-500 to-teal-500" },
+];
+
+const codingProfiles = [
+  { name: "LeetCode", url: "https://leetcode.com/u/Indupalli_Sumanth/", color: "from-amber-500 to-yellow-500" },
+  { name: "HackerRank", url: "https://www.hackerrank.com/profile/isumanth8", color: "from-emerald-500 to-green-500" },
+  { name: "CodeChef", url: "https://www.codechef.com/users/sumanth_15", color: "from-brown-500 to-amber-600" },
+  { name: "GeeksforGeeks", url: "https://www.geeksforgeeks.org/profile/isumanth8?tab=activity", color: "from-green-500 to-lime-500" },
+  { name: "Coding Ninjas", url: "https://www.naukri.com/code360/profile/6344723f-714e-4579-b49e-8ec381399dd9", color: "from-orange-500 to-red-500" },
+  { name: "Salesforce Trailhead", url: "https://www.salesforce.com/trailblazer/isumanth8", color: "from-blue-400 to-sky-500" },
 ];
 
 export default function Education() {
@@ -132,6 +141,46 @@ export default function Education() {
             </div>
           </ScrollReveal>
         </div>
+
+        {/* Coding Profiles */}
+        <ScrollReveal direction="up">
+          <div className="mt-12">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="p-2.5 rounded-xl dark:bg-cyan-500/10 bg-cyan-50">
+                <Code size={22} className="text-cyan-400" />
+              </div>
+              <h3 className="text-xl font-bold dark:text-white text-dark-900">
+                Coding Profiles
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+              {codingProfiles.map((profile, i) => (
+                <motion.a
+                  key={profile.name}
+                  href={profile.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.06, duration: 0.4 }}
+                  whileHover={{ y: -6, scale: 1.04 }}
+                  className="group relative flex flex-col items-center gap-3 p-5 rounded-2xl dark:glass-card glass-card-light neon-border hover:border-primary-500/20 transition-all duration-500"
+                >
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary-500/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className={`relative w-10 h-10 rounded-xl bg-gradient-to-br ${profile.color} flex items-center justify-center text-white font-bold text-sm group-hover:scale-110 transition-transform duration-300`}>
+                    {profile.name.charAt(0)}
+                  </div>
+                  <span className="relative text-xs font-medium dark:text-dark-300 text-dark-600 text-center leading-tight">
+                    {profile.name}
+                  </span>
+                  <ExternalLink size={12} className="relative dark:text-dark-600 text-dark-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </motion.a>
+              ))}
+            </div>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

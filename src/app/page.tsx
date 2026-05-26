@@ -45,7 +45,7 @@ function SplashScreen({ onComplete }: { onComplete: () => void }) {
           className="relative"
         >
           <motion.div
-            className="text-6xl sm:text-8xl font-bold text-gradient-hero mb-2"
+            className="text-5xl sm:text-7xl font-bold mb-2"
             animate={{ 
               textShadow: [
                 "0 0 20px rgba(99,102,241,0)",
@@ -55,7 +55,8 @@ function SplashScreen({ onComplete }: { onComplete: () => void }) {
             }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            {"<IS />"}
+            <span className="text-gradient-hero">Indupalli</span>
+            <span className="text-white ml-3">Sumanth</span>
           </motion.div>
         </motion.div>
 

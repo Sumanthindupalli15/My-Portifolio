@@ -70,11 +70,12 @@ export default function Navbar() {
               e.preventDefault();
               handleClick("#hero");
             }}
-            className="relative text-xl font-bold text-gradient-hero tracking-tight"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="relative text-xl font-bold tracking-tight group"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
           >
-            {"<IS />"}
+            <span className="text-gradient-hero">Indupalli</span>
+            <span className="dark:text-white text-dark-900 ml-1.5">Sumanth</span>
             <motion.div
               className="absolute -inset-2 rounded-lg bg-primary-500/5"
               initial={{ opacity: 0 }}

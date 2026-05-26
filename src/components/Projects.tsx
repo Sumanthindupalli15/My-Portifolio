@@ -18,39 +18,7 @@ const projects = [
     gradient: "from-indigo-500 to-blue-500",
     accent: "indigo",
   },
-  {
-    title: "API Report Generator",
-    description:
-      "Scalable RESTful API service built with Node.js for automated report generation and data access. Supports high-volume data processing with optimized database queries and caching strategies.",
-    technologies: ["Node.js", "Express", "PostgreSQL", "REST APIs", "Redis"],
-    github: "#",
-    live: "#",
-    featured: true,
-    gradient: "from-emerald-500 to-teal-500",
-    accent: "emerald",
-  },
-  {
-    title: "Cloud Storage Manager",
-    description:
-      "AWS S3-based file management system with secure upload/download capabilities, access control, and automated backup scheduling. Features a clean React interface for file operations.",
-    technologies: ["React", "AWS S3", "Node.js", "TypeScript", "Tailwind CSS"],
-    github: "#",
-    live: "#",
-    featured: false,
-    gradient: "from-violet-500 to-purple-500",
-    accent: "violet",
-  },
-  {
-    title: "Data Pipeline Optimizer",
-    description:
-      "High-performance data pipeline for processing and transforming supplier data between multiple systems. Implements efficient algorithms for data validation, deduplication, and synchronization.",
-    technologies: ["Python", "PostgreSQL", "Apache Kafka", "Docker"],
-    github: "#",
-    live: "#",
-    featured: false,
-    gradient: "from-amber-500 to-orange-500",
-    accent: "amber",
-  },
+
   {
     title: "RAG Q&A Agent",
     description:

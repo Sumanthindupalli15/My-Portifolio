@@ -56,9 +56,10 @@ export default function Footer() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-2xl font-bold text-gradient-hero"
+            className="text-2xl font-bold"
           >
-            {"<IS />"}
+            <span className="text-gradient-hero">Indupalli</span>
+            <span className="dark:text-white text-dark-900 ml-1.5">Sumanth</span>
           </motion.div>
 
           {/* Copyright */}
